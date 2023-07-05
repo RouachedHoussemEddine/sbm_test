@@ -1,5 +1,5 @@
 {
-    "fruit": "Apple",
-    "size": "Large",
-    "color": "Red"
+    "docker_image": "nginx",
+    "docker_image_version":["latest", "1.25.1-alpine", "mainline-alpine"],
+    "image_name": "name"
 }
