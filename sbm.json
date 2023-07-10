@@ -3,5 +3,4 @@
     "docker_image_version_nginx":["latest", "1.25.1-bookworm", "mainline-bookworm"],
     "docker_image_version_busybox":["latest", "1.36-glibc", "stable-glibc"],
     "docker_image_version_postgres":["latest", "16beta2-bookworm", "13.11-bullseye"]
-    
 }
