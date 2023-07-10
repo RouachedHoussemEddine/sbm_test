@@ -13,7 +13,7 @@ pipeline {
         }
         stage('build docker image') {
             steps{ 
-                def param1Value = params.ACTIVE_PARAM1
+                def param1Value = params.docker_image
                 sh "echo Value of ACTIVE_PARAM1: ${param1Value}"
                 sh 'docker build --build-arg PARAM1=${param1Value} -t sbm_test src/.'
             }
