@@ -15,15 +15,7 @@ class Package(BaseModel):
 @app.get("/")
 async def helloWorld():
         return {"Hello":"world APP2"}
-"""
-@app.get("/item/{item_id}")
-async def get_item(item_id:int):
-    return {"item_id": item_id}
 
-@app.get("/item/")
-async def read_item(number:int,text: str):
-        return {"number":number,"text":text} 
-"""
 
 @app.get("/IP/{item_id}")
 def extract_ip(item_id: str):
