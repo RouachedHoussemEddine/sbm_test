@@ -4,12 +4,7 @@ pipeline {
     stages {
         stage('Pull GitHub') {
             steps {
-                checkout(
-                    scm: git(
-                        branches: [[name: '**']],
-                        userRemoteConfigs: [[url: 'https://github.com/RouachedHoussemEddine/sbm_test']]
-                    )
-                )
+                    checkout scmGit(branches: [[name: '**']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/RouachedHoussemEddine/sbm_test']])
             }
         }
         stage('Build Docker image') {
