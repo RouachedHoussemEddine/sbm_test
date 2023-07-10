@@ -1,9 +1,11 @@
 #FROM python:3.8-alpine
 ARG PARAM1
-
-FROM ${PARAM1}:3.10.5
+ARG PARAM2
+#3.10.5
+FROM ${PARAM1}:${PARAM2}
 
 ENV PARAM1=${PARAM1}
+ENV PARAM2=${PARAM2}
 
 WORKDIR /app
 COPY requirements.txt ./app/src/requirements.txt
