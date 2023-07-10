@@ -1,8 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.10.5'
-        }
+    agent any
     }
     stages {
         stage('Pull GitHub') {
