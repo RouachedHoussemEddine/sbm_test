@@ -9,4 +9,4 @@ ENV APP=app
 
 COPY . /app/src
 EXPOSE 8000
-CMD ["uvicorn", "src2.main:app","--proxy-headers","--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "src.main:app","--proxy-headers","--host", "0.0.0.0", "--port", "8000"]
