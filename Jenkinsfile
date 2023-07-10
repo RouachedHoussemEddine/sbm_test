@@ -2,7 +2,7 @@ pipeline {
      agent {
         docker {
             // Specify the Docker image to use
-            image 'your-docker-image:tag'
+            image 'python:3.10.5'
         }
     parameters {
         // Define the parameters you want to pass to the build
