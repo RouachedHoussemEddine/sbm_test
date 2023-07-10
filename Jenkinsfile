@@ -4,10 +4,6 @@ pipeline {
             // Specify the Docker image to use
             image 'python:3.10.5'
         }
-    parameters {
-        // Define the parameters you want to pass to the build
-        string(name: 'PARAM1', defaultValue: ${docker_image} , description: 'Description of PARAM1')
-    }
     stages {
         stage('pull github') {
             steps {
@@ -16,8 +12,10 @@ pipeline {
         
         }
         stage('build docker image') {
-            steps{   
-                sh 'docker build --build-arg PARAM1=${params.PARAM1} -t sbm_test src/.'
+            steps{ 
+                def param1Value = params.ACTIVE_PARAM1
+                sh "echo Value of ACTIVE_PARAM1: ${param1Value}"
+                sh 'docker build --build-arg PARAM1=${param1Value} -t sbm_test src/.'
             }
         }
     }
