@@ -1,8 +1,10 @@
 #FROM python:3.8-alpine
 ARG PARAM1
 
-FROM PARAM1:3.10.5
+FROM ${PARAM1}:3.10.5
+
 ENV PARAM1=${PARAM1}
+
 WORKDIR /app
 COPY requirements.txt ./app/src/requirements.txt
 RUN pip install --no-cache-dir --upgrade -r ./app/src/requirements.txt
