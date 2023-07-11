@@ -17,6 +17,8 @@ pipeline {
                     sh "docker build --build-arg PARAM1=${param1Value} --build-arg PARAM2=${param2Value} -t sbm_test src/."
                 }
             }
+
         }
+    
     }
 }
