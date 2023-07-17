@@ -18,7 +18,7 @@ pipeline {
                     def branchSpecificJson = sh(returnStdout: true, script: "curl -s https://raw.githubusercontent.com/RouachedHoussemEddine/sbm_test/${params.BRANCH_NAME}/sbm.json")
                     def json = readJSON(text: branchSpecificJson)
                     def dockerImage = json.docker_image
-                    def dockerImageVersion = json.docker_image_version
+                    def dockerImageVersion = json.docker_image_version_python
                     echo "Docker Image: ${dockerImage}"
                     echo "Docker Image Version: ${dockerImageVersion}"
                 }
