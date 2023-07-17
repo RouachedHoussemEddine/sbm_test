@@ -1,11 +1,9 @@
 pipeline {
     agent any
-    
+
     parameters {
         choice(name: 'BRANCH_NAME', choices: ['test', 'dev', 'prod'], description: 'Branch to build')
-        choice(name: 'DOCKER_IMAGE', choices: ['image1', 'image2'], description: 'Docker image to use')
-        choice(name: 'DOCKER_IMAGE_VERSION', choices: ['v1', 'v2'], description: 'Version of the Docker image')
-    }
+        }
     
     stages {
         stage('Pull GitHub') {
@@ -14,11 +12,24 @@ pipeline {
             }
         }
         
+        stage('Fetch Docker image information') {
+            steps {
+                script {
+                    def branchSpecificJson = sh(returnStdout: true, script: "curl -s https://raw.githubusercontent.com/RouachedHoussemEddine/sbm_test/${params.BRANCH_NAME}/sbm.json")
+                    def json = readJSON(text: branchSpecificJson)
+                    def dockerImage = json.docker_image
+                    def dockerImageVersion = json.docker_image_version
+                    echo "Docker Image: ${dockerImage}"
+                    echo "Docker Image Version: ${dockerImageVersion}"
+                }
+            }
+        }
+        
         stage('Build Docker image') {
             steps {
                 script {
-                    def dockerImage = params.DOCKER_IMAGE
-                    def dockerImageVersion = params.DOCKER_IMAGE_VERSION
+                    def dockerImage = sh(returnStdout: true, script: "echo ${dockerImage}").trim()
+                    def dockerImageVersion = sh(returnStdout: true, script: "echo ${dockerImageVersion}").trim()
                     sh "docker build --build-arg PARAM1=${dockerImage} --build-arg PARAM2=${dockerImageVersion} -t sbm_test src/."
                 }
             }
