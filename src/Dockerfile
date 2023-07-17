@@ -1,7 +1,7 @@
-#FROM python:3.8-alpine
+#FROM python:3.8-alpine #3.10.5
 ARG PARAM1
 ARG PARAM2
-#3.10.5
+
 FROM ${PARAM1}:${PARAM2}
 
 ENV PARAM1=${PARAM1}
