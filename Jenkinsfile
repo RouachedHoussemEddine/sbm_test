@@ -1,12 +1,5 @@
 pipeline {
     agent any
-
-    //parameters {
-        //choice(name: 'BRANCH_NAME', choices: ['test', 'dev', 'prod'], description: 'Branch to build')
-        //}
-stage('Parameters'){
-                steps {
-                    script {
                     properties([
                             parameters([
                                 [$class: 'ChoiceParameter', 
@@ -14,7 +7,7 @@ stage('Parameters'){
                                     description: 'Select the Environemnt from the Dropdown List', 
                                     filterLength: 1, 
                                     filterable: false, 
-                                    name: 'Env', 
+                                    name: 'BRANCH_NAME', 
                                     script: [
                                         $class: 'GroovyScript', 
                                         fallbackScript: [
@@ -31,19 +24,28 @@ stage('Parameters'){
                                         ]
                                     ]
                                 ],
-
+    [$class: 'DynamicReferenceParameter',
+      choiceType: 'ET_FORMATTED_HTML',
+      name: '',
+      referencedParameters: 'BRANCH_NAME',
+      script: [
+          $class: 'ScriptlerScript',
+          scriptlerScriptId:'fetchJsonDataFromGithub.groovy',
+          // sandbox: true,
+          parameters: [
+            [name:'owner', value: "RouachedHoussemEddine"],
+            [name:'repo', value: 'sbm_test'],
+            [name:'branch', value: 'test'],
+            [name:'filePath', value: 'sbm.json'],
+            [name:'parameter', value: 'docker_image']
+          ]
+        ],
+      omitValueField: false,
+      ]
                                 
-                                
-                                
+                            ]
                             )
                            ])
-                    }
-                }
-            }
-
-
-
-
 
         stage('Pull GitHub') {
             steps {
