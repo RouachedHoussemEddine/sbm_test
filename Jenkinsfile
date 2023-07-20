@@ -26,7 +26,7 @@ properties([
       script: [
           $class: 'ScriptlerScript',
           scriptlerScriptId:'fetchJsonDataFromGithub.groovy',
-          // sandbox: true,
+           sandbox: true,
           parameters: [
             [name:'owner', value: "RouachedHoussemEddine"],
             [name:'repo', value: 'sbm_test'],
