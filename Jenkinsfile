@@ -1,18 +1,21 @@
 properties([
                             parameters([
+                                
+                                [choice choices: ['RouachedHoussemEddine', 'sbm', 'zied'], description: 'Provide GitHub owner', name: 'GitHub_owner'],
+                                [choice choices: ['sbm_test', 'projet_Auth', 'projet_Park'], description: 'Provide GitHub repository', name: 'Repository'],
+                                [choice choices: ['test', 'dev', 'prod'], description: 'Provide GitHub branch', name: 'Branch'],
                                 [$class: 'ChoiceParameter', 
                                     choiceType: 'PT_SINGLE_SELECT', 
-                                    description: 'Select the docker image from the Dropdown List', 
-                                    filterLength: 1, 
-                                    filterable: false, 
-                                    name: 'docker_image',  
+                                    description: 'Select the docker image from the Dropdown List',  
+                                    name: 'docker_image',
+                                    referencedParameters: 'GitHub_owner,Repository,Branch',
                                     script: [
                                     $class: 'ScriptlerScript',
                                     scriptlerScriptId:'fetchJsonDataFromGithub.groovy',
                                     parameters: [
-                                      [name:'owner', value: 'RouachedHoussemEddine'],
-                                      [name:'repo', value: 'sbm_test'],
-                                      [name:'branch', value: 'test'],
+                                      [name:'owner', value: '${GitHub_owner}'],
+                                      [name:'repo', value: '${Repository}'],
+                                      [name:'branch', value: '${Branch}'],
                                       [name:'filePath', value: 'sbm.json'],
                                       [name:'parameter', value: 'docker_image']
                                       ]
