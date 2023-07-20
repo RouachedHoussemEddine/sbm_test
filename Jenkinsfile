@@ -18,7 +18,7 @@ properties([
                                             classpath: [], 
                                             sandbox: false, 
                                             script: 
-                                                "return['dev','stage','prod']"
+                                                '''return['dev','stage','prod']'''
                                         ]
                                     ]
                                 ],
@@ -59,7 +59,7 @@ properties([
                                     script: 
                                         [$class: 'GroovyScript', 
                                         script: 'return["Could not get AMi Information"]', 
-                                        script: [
+                                         script: [
                                             script: '''
                                                     if (Env.equals("dev")){
                                                         return["ami-sd2345sd:  AMI with Java", "ami-asdf245sdf: AMI with Python", "ami-asdf3245sd: AMI with Groovy"]
