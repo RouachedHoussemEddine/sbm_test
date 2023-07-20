@@ -1,6 +1,6 @@
 parameters([
                     choice(name:"NeedUpgradePC",choices:['yes','no'],description: "Do you need upgrade your PC"),
-                    
+
                     [$class: 'DynamicReferenceParameter',
                             choiceType: 'ET_FORMATTED_HTML',
                             omitValueField: true,
@@ -21,11 +21,7 @@ parameters([
                                             sandbox: true,
                                             script:
                                                     """
-                                    if(NeedUpgradePC.equals('yes')) {
-                                        inputBox="<input name='value' type='text' value='Kingston 8GB'>"
-                                    } else {
-                                        inputBox="<input name='value' type='text' value='Kingston 8GB' disabled>"
-                                    }
+                                    return["ami-sd34sdf:  AMI with Java", "ami-sdf345sdc: AMI with Python", "ami-sdf34sdf: AMI with Groovy"]
                                 """
                                     ]
                             ]
@@ -50,12 +46,7 @@ parameters([
                                                     classpath: [],
                                                     sandbox: true,
                                                     script:
-                                                            """
-                                    if(NeedUpgradePC.equals('yes')) {
-                                        inputBox="<input name='value' type='text' value='Intel Core i5'>"
-                                    } else {
-                                        inputBox="<input name='value' type='text' value='Intel Core i5' disabled>"
-                                    }
+                                                            """return["ami-sd34sdf:  AMI with Java", "ami-sdf345sdc: AMI with Python", "ami-sdf34sdf: AMI with Groovy"]
                                 """
                                             ]
                                     ]
