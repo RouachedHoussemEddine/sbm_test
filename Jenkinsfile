@@ -6,9 +6,8 @@ properties([
       name: 'BRANCH_NAME',
         description:  'Cluster ?',
       // referencedParameters: 'CLUSTER',
-        $class: 'GroovyScript'
-        fallbackScript: [
-                    
+        script: [$class: 'GroovyScript'
+                fallbackScript: [
                     classpath: [],
                     sandbox: false,
                     script: "return['Could not get The environments']"
@@ -18,6 +17,7 @@ properties([
                     sandbox: false,
                     script: "return['dev','stage','prod']"
                 ]
+      ]
       ]
       ,
       [
