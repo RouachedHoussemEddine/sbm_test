@@ -4,7 +4,7 @@ properties([
       $class: 'ChoiceParameter',
       choiceType: 'PT_SINGLE_SELECT',
       name: 'BRANCH_NAME',
-        description:  'Cluster ?',
+        description:  'Cluster ',
       // referencedParameters: 'CLUSTER',
         script: [$class: 'GroovyScript'
                 fallbackScript: [
