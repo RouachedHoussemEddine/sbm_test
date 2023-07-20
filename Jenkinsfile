@@ -1,8 +1,8 @@
 pipeline {
     agent any
 
-    options([
-        parameters([
+    properties([
+        parameters{
             [$class: 'ChoiceParameter',
             choiceType: 'PT_SINGLE_SELECT',
             description: 'Select the Environment from the Dropdown List',
@@ -41,7 +41,7 @@ pipeline {
             ],
             omitValueField: false,
             ]
-        ])
+        }
     ])
 
 
