@@ -22,8 +22,8 @@ properties([
       ,
       [
       $class: 'CascadeChoiceParameter',
-      choiceType: 'ET_FORMATTED_HTML',
-      name: 'Kong_Parameters',
+      choiceType: 'PT_SINGLE_SELECT',
+      name: 'docker_image',
       referencedParameters: 'BRANCH_NAME',
       script: [
           $class: 'ScriptlerScript',
@@ -32,7 +32,7 @@ properties([
           parameters: [
             [name:'owner', value: "RouachedHoussemEddine"],
             [name:'repo', value: 'sbm_test'],
-            [name:'branch', value: 'test'],
+            [name:'branch', value: '${BRANCH_NAME}'],
             [name:'filePath', value: 'sbm.json'],
             [name:'parameter', value: 'docker_image']
           ]
