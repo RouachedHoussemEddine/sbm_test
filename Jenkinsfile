@@ -18,16 +18,15 @@ properties([
                     sandbox: false,
                     script: "return['dev','stage','prod']"
                 ]
-            ]
-            ],
+            ]],
             [$class: 'DynamicReferenceParameter',
             choiceType: 'ET_FORMATTED_HTML',
-            name: '',
+            name: 'docker_image',
             referencedParameters: 'BRANCH_NAME',
             script: [
                 $class: 'ScriptlerScript',
                 scriptlerScriptId: 'fetchJsonDataFromGithub.groovy',
-                // sandbox: true,
+                sandbox: true,
                 parameters: [
                     [name:'owner', value: "RouachedHoussemEddine"],
                     [name:'repo', value: 'sbm_test'],
