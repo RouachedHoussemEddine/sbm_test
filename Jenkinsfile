@@ -1,7 +1,7 @@
 pipeline {
     agent any
 
-    properties([
+    options([
         parameters([
             [$class: 'ChoiceParameter',
             choiceType: 'PT_SINGLE_SELECT',
@@ -44,7 +44,7 @@ pipeline {
         ])
     ])
 
-    
+
    stages {
         stage('Pull GitHub') {
             steps {
