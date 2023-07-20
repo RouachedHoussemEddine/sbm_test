@@ -2,31 +2,44 @@ properties([
                             parameters([
                                 [$class: 'ChoiceParameter', 
                                     choiceType: 'PT_SINGLE_SELECT', 
-                                    description: 'Select the Environemnt from the Dropdown List', 
+                                    description: 'Select the docker image from the Dropdown List', 
                                     filterLength: 1, 
                                     filterable: false, 
-                                    name: 'Env', 
+                                    name: 'docker_image', 
                                     script: [
-                                        $class: 'GroovyScript', 
-                                        fallbackScript: [
-                                            classpath: [], 
-                                            sandbox: false, 
-                                            script: 
-                                                "return['Could not get The environemnts']"
-                                        ], 
-                                        script: [
-                                            classpath: [], 
-                                            sandbox: false, 
-                                            script: 
-                                                "return['dev','stage','prod']"
-                                        ]
+                                    $class: 'ScriptlerScript',
+                                    scriptlerScriptId:'fetchJsonDataFromGithub.groovy',
+                                    parameters: [
+                                      [name:'owner', value: 'RouachedHoussemEddine'],
+                                      [name:'repo', value: 'sbm_test'],
+                                      [name:'branch', value: 'test'],
+                                      [name:'filePath', value: 'sbm.json'],
+                                      [name:'parameter', value: 'docker_image']
+                                      ]
                                     ]
                                 ],
                                 [$class: 'CascadeChoiceParameter', 
                                     choiceType: 'PT_SINGLE_SELECT', 
                                     description: 'Select the AMI from the Dropdown List',
-                                    name: 'AMI List', 
-                                    referencedParameters: 'Env', 
+                                    name: 'docker_image_version', 
+                                    referencedParameters: 'docker_image', 
+                                    script: [
+                                    $class: 'ScriptlerScript',
+                                    scriptlerScriptId:'fetchJsonDataFromGithubVersion.groovy',
+                                    parameters: [
+                                      [name:'owner', value: 'RouachedHoussemEddine'],
+                                      [name:'repo', value: 'sbm_test'],
+                                      [name:'branch', value: 'test'],
+                                      [name:'filePath', value: 'sbm.json'],
+                                      [name:'parameter', value: '${docker_image}']
+                                      ]
+                                    ]
+                                ],
+                                [$class: 'CascadeChoiceParameter', 
+                                    choiceType: 'PT_SINGLE_SELECT', 
+                                    description: 'Select the  AMI based on the following information', 
+                                    name: 'Image Information', 
+                                    referencedParameters: 'docker_image', 
                                     script: 
                                         [$class: 'GroovyScript', 
                                         fallbackScript: [
@@ -38,41 +51,21 @@ properties([
                                                 classpath: [], 
                                                 sandbox: false, 
                                                 script: '''
-                                                if (Env.equals("dev")){
+                                                if (docker_image.equals("python")){
                                                     return["ami-sd2345sd", "ami-asdf245sdf", "ami-asdf3245sd"]
                                                 }
-                                                else if(Env.equals("stage")){
+                                                else if(docker_image.equals("nginx")){
                                                     return["ami-sd34sdf", "ami-sdf345sdc", "ami-sdf34sdf"]
                                                 }
-                                                else if(Env.equals("prod")){
+                                                else if(docker_image.equals("busybox")){
+                                                    return["ami-sdf34sdf", "ami-sdf34ds", "ami-sdf3sf3"]
+                                                }
+                                                else if(docker_image.equals("postgres")){
                                                     return["ami-sdf34sdf", "ami-sdf34ds", "ami-sdf3sf3"]
                                                 }
                                                 '''
                                             ] 
                                     ]
-                                ],
-                                [$class: 'DynamicReferenceParameter', 
-                                    choiceType: 'ET_ORDERED_LIST', 
-                                    description: 'Select the  AMI based on the following information', 
-                                    name: 'Image Information', 
-                                    referencedParameters: 'Env', 
-                                    script: 
-                                        [$class: 'GroovyScript', 
-                                        script: 'return["Could not get AMi Information"]', 
-                                        script: [
-                                            script: '''
-                                                    if (Env.equals("dev")){
-                                                        return["ami-sd2345sd:  AMI with Java", "ami-asdf245sdf: AMI with Python", "ami-asdf3245sd: AMI with Groovy"]
-                                                    }
-                                                    else if(Env.equals("stage")){
-                                                        return["ami-sd34sdf:  AMI with Java", "ami-sdf345sdc: AMI with Python", "ami-sdf34sdf: AMI with Groovy"]
-                                                    }
-                                                    else if(Env.equals("prod")){
-                                                        return["ami-sdf34sdf:  AMI with Java", "ami-sdf34ds: AMI with Python", "ami-sdf3sf3: AMI with Groovy"]
-                                                    }
-                                                    '''
-                                                ]
-                                        ]
                                 ]
                             ])
                         ])
@@ -86,27 +79,17 @@ pipeline {
             }
         }
         
-        stage('Fetch Docker image information') {
-            steps {
-                script {
-                    def branchSpecificJson = sh(returnStdout: true, script: "curl -s https://raw.githubusercontent.com/RouachedHoussemEddine/sbm_test/test/sbm.json")
-                    def json = readJSON(text: branchSpecificJson)
-                    def dockerImage = json.docker_image
-                    def dockerImageVersion = json.docker_image_version_python
-                    echo "Docker Image: ${dockerImage}"
-                    echo "Docker Image Version: ${dockerImageVersion}"
-                }
-            }
-        }
-        
         stage('Build Docker image') {
             steps {
                 script {
-                    def dockerImage = sh(returnStdout: true, script: "echo ${dockerImage}").trim()
-                    def dockerImageVersion = sh(returnStdout: true, script: "echo ${dockerImageVersion}").trim()
-                    sh "docker build --build-arg PARAM1=${dockerImage} --build-arg PARAM2=${dockerImageVersion} -t sbm_test src/."
+                    def param1Value = params.docker_image
+                    def param2Value = params.docker_image_version
+                    //sh "echo Value of docker_image: ${param1Value}"
+                    //sh "echo Value of docker_image_version: ${param2Value}"
+                    sh "docker build --build-arg PARAM1=${param1Value} --build-arg PARAM2=${param2Value} -t sbm_test src/."
                 }
             }
+
         }
     }
     
