@@ -39,20 +39,13 @@ properties([
         ],
       omitValueField: false,
       ]
-      
    ])
  ])
 
 
 pipeline {
     agent any
-
-    parameters {
-        choice(name: 'Branch name', choices: "${BRANCH_NAME}", description: 'Branch to build')
-
-
-
-   stages {
+    stages {
         stage('Pull GitHub') {
             steps {
                 checkout scmGit(branches: [[name: "*/${params.BRANCH_NAME}"]], extensions: [], userRemoteConfigs: [[url: 'https://github.com/RouachedHoussemEddine/sbm_test']])
