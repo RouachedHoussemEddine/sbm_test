@@ -22,6 +22,7 @@ properties([
                                         ]
                                     ]
                                 ],
+
                                 [$class: 'CascadeChoiceParameter', 
                                     choiceType: 'PT_SINGLE_SELECT', 
                                     description: 'Select the AMI from the Dropdown List',
@@ -51,6 +52,7 @@ properties([
                                             ] 
                                     ]
                                 ],
+
                                 [$class: 'DynamicReferenceParameter', 
                                     choiceType: 'ET_ORDERED_LIST', 
                                     description: 'Select the  AMI based on the following infomration', 
@@ -58,8 +60,14 @@ properties([
                                     referencedParameters: 'Env', 
                                     script: 
                                         [$class: 'GroovyScript', 
-                                        script: 'return["Could not get AMi Information"]', 
+                                        fallbackScript: [
+                                                classpath: [], 
+                                                sandbox: false, 
+                                                script: 'return["Could not get AMi Information"]'
+                                                ], 
                                          script: [
+                                                classpath: [], 
+                                                sandbox: false,
                                             script: '''
                                                     if (Env.equals("dev")){
                                                         return["ami-sd2345sd:  AMI with Java", "ami-asdf245sdf: AMI with Python", "ami-asdf3245sd: AMI with Groovy"]
