@@ -45,6 +45,9 @@ properties([
 pipeline {
     agent any
 
+    parameters {
+        choice(name: 'Branch name', choices: "${BRANCH_NAME}", description: 'Branch to build')
+
 
 
    stages {
