@@ -5,7 +5,7 @@ properties([
                                     description: 'Select the docker image from the Dropdown List', 
                                     filterLength: 1, 
                                     filterable: false, 
-                                    name: 'docker_image', 
+                                    name: 'docker_image',  
                                     script: [
                                     $class: 'ScriptlerScript',
                                     scriptlerScriptId:'fetchJsonDataFromGithub.groovy',
