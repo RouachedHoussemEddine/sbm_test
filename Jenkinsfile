@@ -90,14 +90,14 @@ pipeline {
     stages {
         stage('Pull GitHub') {
             steps {
-                checkout scmGit(branches: [[name: "*/${params.BRANCH_NAME}"]], extensions: [], userRemoteConfigs: [[url: 'https://github.com/RouachedHoussemEddine/sbm_test']])
+                checkout scmGit(branches: [[name: "*/test"]], extensions: [], userRemoteConfigs: [[url: 'https://github.com/RouachedHoussemEddine/sbm_test']])
             }
         }
         
         stage('Fetch Docker image information') {
             steps {
                 script {
-                    def branchSpecificJson = sh(returnStdout: true, script: "curl -s https://raw.githubusercontent.com/RouachedHoussemEddine/sbm_test/${params.BRANCH_NAME}/sbm.json")
+                    def branchSpecificJson = sh(returnStdout: true, script: "curl -s https://raw.githubusercontent.com/RouachedHoussemEddine/sbm_test/test/sbm.json")
                     def json = readJSON(text: branchSpecificJson)
                     def dockerImage = json.docker_image
                     def dockerImageVersion = json.docker_image_version_python
