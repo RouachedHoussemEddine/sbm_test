@@ -1,5 +1,5 @@
 properties([
-        parameters{
+        parameters([
             [$class: 'ChoiceParameter',
             choiceType: 'PT_SINGLE_SELECT',
             description: 'Select the Environment from the Dropdown List',
@@ -38,7 +38,7 @@ properties([
             ],
             omitValueField: false,
             ]
-        }
+        ])
     ])
 
 
