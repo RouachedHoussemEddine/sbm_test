@@ -1,14 +1,12 @@
 properties([
-        parameters([
-            [$class: 'ChoiceParameter',
-            choiceType: 'PT_SINGLE_SELECT',
-            description: 'Select the Environment from the Dropdown List',
-            filterLength: 1,
-            filterable: false,
-            name: 'BRANCH_NAME',
-            script: [
-                $class: 'GroovyScript',
-                fallbackScript: [
+  parameters([
+      [
+      $class: 'ChoiceParameter',
+      choiceType: 'PT_SINGLE_SELECT',
+      name: 'BRANCH_NAME',
+      // description:  'Cluster ?',
+      // referencedParameters: 'CLUSTER',
+        fallbackScript: [
                     classpath: [],
                     sandbox: false,
                     script: "return['Could not get The environments']"
@@ -18,27 +16,30 @@ properties([
                     sandbox: false,
                     script: "return['dev','stage','prod']"
                 ]
-            ]],
-            [$class: 'DynamicReferenceParameter',
-            choiceType: 'ET_FORMATTED_HTML',
-            name: 'docker_image',
-            referencedParameters: 'BRANCH_NAME',
-            script: [
-                $class: 'ScriptlerScript',
-                scriptlerScriptId: 'fetchJsonDataFromGithub.groovy',
-                sandbox: true,
-                parameters: [
-                    [name:'owner', value: "RouachedHoussemEddine"],
-                    [name:'repo', value: 'sbm_test'],
-                    [name:'branch', value: 'test'],
-                    [name:'filePath', value: 'sbm.json'],
-                    [name:'parameter', value: 'docker_image']
-                ]
-            ],
-            omitValueField: false,
-            ]
-        ])
-    ])
+      ]
+      ,
+      [
+      $class: 'DynamicReferenceParameter',
+      choiceType: 'ET_FORMATTED_HTML',
+      name: 'Kong_Parameters',
+      referencedParameters: 'BRANCH_NAME',
+      script: [
+          $class: 'ScriptlerScript',
+          scriptlerScriptId:'fetchJsonDataFromGithub.groovy',
+          // sandbox: true,
+          parameters: [
+            [name:'owner', value: "RouachedHoussemEddine"],
+            [name:'repo', value: 'sbm_test'],
+            [name:'branch', value: 'test'],
+            [name:'filePath', value: 'sbm.json'],
+            [name:'parameter', value: 'docker_image']
+          ]
+        ],
+      omitValueField: false,
+      ]
+      
+   ])
+ ])
 
 
 pipeline {
