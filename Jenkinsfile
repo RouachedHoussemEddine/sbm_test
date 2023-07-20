@@ -21,7 +21,7 @@ properties([
       ]
       ,
       [
-      $class: 'DynamicReferenceParameter',
+      $class: 'CascadeChoiceParameter',
       choiceType: 'ET_FORMATTED_HTML',
       name: 'Kong_Parameters',
       referencedParameters: 'BRANCH_NAME',
