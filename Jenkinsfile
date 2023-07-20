@@ -4,9 +4,11 @@ properties([
       $class: 'ChoiceParameter',
       choiceType: 'PT_SINGLE_SELECT',
       name: 'BRANCH_NAME',
-      // description:  'Cluster ?',
+        description:  'Cluster ?',
       // referencedParameters: 'CLUSTER',
+        $class: 'GroovyScript'
         fallbackScript: [
+                    
                     classpath: [],
                     sandbox: false,
                     script: "return['Could not get The environments']"
