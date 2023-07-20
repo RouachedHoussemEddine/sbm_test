@@ -1,5 +1,6 @@
 parameters([
                     choice(name:"NeedUpgradePC",choices:['yes','no'],description: "Do you need upgrade your PC"),
+                    
                     [$class: 'DynamicReferenceParameter',
                             choiceType: 'ET_FORMATTED_HTML',
                             omitValueField: true,
@@ -29,7 +30,8 @@ parameters([
                                     ]
                             ]
                          ],
-                            [$class: 'DynamicReferenceParameter',
+                        
+                        [$class: 'DynamicReferenceParameter',
                                     choiceType: 'ET_FORMATTED_HTML',
                                     omitValueField: true,
                                     description: 'Please provide a Elastic alias label',
