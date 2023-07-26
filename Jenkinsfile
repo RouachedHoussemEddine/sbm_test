@@ -113,7 +113,7 @@ pipeline {
                     steps {
                         script {
                             withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS_ID_TEST', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                                sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
+                                sh "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin"
                             }
                                 def dockerHubUsername = "azzinoth5"
                                 def repo = params.Repository
@@ -148,9 +148,3 @@ pipeline {
     }
 
 }
-
-    
-
-    
-
-
