@@ -119,20 +119,14 @@ pipeline {
                                 def repo = params.Repository
                                 def dockerHubRepo = "${dockerHubUsername}/${repo}" // Replace <DOCKERHUB_USERNAME> with your Docker Hub username
                                 def dockerHubTag = "v1.0" // Replace v1.0 with the desired tag/version
-                                sh "docker tag sbm_test ${dockerHubRepo}:${dockerHubTag}"
-                                // Push the Docker image to Docker Hub
-                                sh "docker push ${dockerHubRepo}:${dockerHubTag}"
-                                sh "docker logout"
-                            //docker.withRegistry("https://hub.docker.com/repository/docker/azzinoth5/sbm_test/general", "DOCKERHUB_CREDENTIALS_ID") {
-                                // Log in to Docker Hub
-                                
-                                //sh "echo $DOCKERHUB_CREDENTIALS | docker login --username ${dockerHubUsername} --password-stdin"
+                                docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                                    sh "docker tag sbm_test ${dockerHubRepo}:${dockerHubTag}"
+                                    sh "docker push ${dockerHubRepo}:${dockerHubTag}"
+                                    sh "docker logout"
+                                    }
                                 
                                 
-                                // Tag the Docker image with the Docker Hub repository name and version
-
-
-                               //pushDockerImageToDockerHub()
+                               
                             }
                         }
                     }
