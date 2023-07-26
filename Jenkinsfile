@@ -95,6 +95,27 @@ pipeline {
 
         }
     }
+
+stage('Push Docker image to Docker Hub') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: 'DOCKERHUB_CREDENTIALS_ID', variable: 'DOCKERHUB_CREDENTIALS')]) {
+                        // Log in to Docker Hub
+                        sh "echo $DOCKERHUB_CREDENTIALS | docker login --username azzinoth5 --password-stdin"
+
+                        // Tag the Docker image with the Docker Hub repository name and version
+                        def dockerHubRepo = "azzinoth5/${Repository}" // Replace <DOCKERHUB_USERNAME> with your Docker Hub username
+                        def dockerHubTag = "v1.0" // Replace v1.0 with the desired tag/version
+                        sh "docker tag sbm_test ${dockerHubRepo}:${dockerHubTag}"
+
+                        // Push the Docker image to Docker Hub
+                        sh "docker push ${dockerHubRepo}:${dockerHubTag}"
+                    }
+                }
+            }
+        }
+    }
+
     
     post {
         success {
