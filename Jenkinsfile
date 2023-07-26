@@ -1,9 +1,9 @@
 properties([
                             parameters([
                                 //choice(name: 'BRANCH_NAME', choices: ['test', 'dev', 'prod'], description: 'Branch to build')
-                                [choice (choices: ['RouachedHoussemEddine', 'sbm', 'zied'], description: 'Provide GitHub owner', name: 'GitHub_owner')],
-                                [choice (choices: ['sbm_test', 'projet_Auth', 'projet_Park'], description: 'Provide GitHub repository', name: 'Repository')],
-                                [choice (choices: ['test', 'dev', 'prod'], description: 'Provide GitHub branch', name: 'Branch')],
+                                choice (choices: ['RouachedHoussemEddine', 'sbm', 'zied'], description: 'Provide GitHub owner', name: 'GitHub_owner'),
+                                choice (choices: ['sbm_test', 'projet_Auth', 'projet_Park'], description: 'Provide GitHub repository', name: 'Repository'),
+                                choice (choices: ['test', 'dev', 'prod'], description: 'Provide GitHub branch', name: 'Branch'),
                                 [$class: 'ChoiceParameter', 
                                     choiceType: 'PT_SINGLE_SELECT', 
                                     description: 'Select the docke image from the Dropdown List',  
