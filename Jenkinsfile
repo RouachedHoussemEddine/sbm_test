@@ -28,14 +28,14 @@ properties([
                                     choiceType: 'PT_SINGLE_SELECT', 
                                     description: 'Select the AMI from the Dropdown List',
                                     name: 'docker_image_version', 
-                                    referencedParameters: 'docker_image', 
+                                    referencedParameters: 'docker_image,GitHub_owner,Repository,Branch', 
                                     script: [
                                     $class: 'ScriptlerScript',
                                     scriptlerScriptId:'fetchJsonDataFromGithubVersion.groovy',
                                     parameters: [
-                                      [name:'owner', value: 'RouachedHoussemEddine'],
-                                      [name:'repo', value: 'sbm_test'],
-                                      [name:'branch', value: 'test'],
+                                      [name:'owner', value: '${GitHub_owner}'],
+                                      [name:'repo', value: '${Repository}'],
+                                      [name:'branch', value: '${Branch}'],
                                       [name:'filePath', value: 'sbm.json'],
                                       [name:'parameter', value: '${docker_image}']
                                       ]
