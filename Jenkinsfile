@@ -116,7 +116,7 @@ pipeline {
                                 sh "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin"
                             }
                                 def dockerHubUsername = "azzinoth5"
-                                def repo = params.Repository
+                                def repo = "sbm_test"
                                 def dockerHubRepo = "${dockerHubUsername}/${repo}" // Replace <DOCKERHUB_USERNAME> with your Docker Hub username
                                 def dockerHubTag = "v1.0" // Replace v1.0 with the desired tag/version
                                 docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
