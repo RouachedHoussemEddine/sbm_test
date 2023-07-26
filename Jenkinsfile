@@ -97,13 +97,14 @@ pipeline {
         stage('Push Docker image to Docker Hub') {
                     steps {
                         script {
-                            withCredentials([string(credentialsId: 'DOCKERHUB_CREDENTIALS_ID', variable: 'DOCKERHUB_CREDENTIALS')]) {
+                            withDockerRegistry([string(credentialsId: 'DOCKERHUB_CREDENTIALS_ID', url : '')]) {
                                 // Log in to Docker Hub
-                                def dockerHubUsername = "azzinoth5"
-                                sh "echo $DOCKERHUB_CREDENTIALS | docker login --username ${dockerHubUsername} --password-stdin"
+                                
+                                //sh "echo $DOCKERHUB_CREDENTIALS | docker login --username ${dockerHubUsername} --password-stdin"
                                 
                                 
                                 // Tag the Docker image with the Docker Hub repository name and version
+                                def dockerHubUsername = "azzinoth5"
                                 def repo = params.Repository
                                 def dockerHubRepo = "azzinoth5/${repo}" // Replace <DOCKERHUB_USERNAME> with your Docker Hub username
                                 def dockerHubTag = "v1.0" // Replace v1.0 with the desired tag/version
