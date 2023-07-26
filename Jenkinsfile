@@ -119,7 +119,7 @@ pipeline {
                                 def repo = "sbm_test"
                                 def dockerHubRepo = "${dockerHubUsername}/${repo}" // Replace <DOCKERHUB_USERNAME> with your Docker Hub username
                                 def dockerHubTag = "v1.0" // Replace v1.0 with the desired tag/version
-                                docker.withRegistry(credentialsId: 'dockerhub') {
+                                docker.withRegistry(credentialsId: 'DOCKERHUB_CREDENTIALS_ID_TEST') {
                                     sh "docker tag sbm_test ${dockerHubRepo}:${dockerHubTag}"
                                     sh "docker push ${dockerHubRepo}:${dockerHubTag}"
                                     sh "docker logout"
