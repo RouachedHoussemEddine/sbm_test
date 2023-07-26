@@ -79,6 +79,11 @@ properties([
 
 pipeline {
     agent any
+
+environment {
+    DOCKERHUB_CREDENTIALS = credentials('DOCKERHUB_CREDENTIALS_ID_TEST')
+  }
+
     stages {
         stage('Pull GitHub') {
             steps {
