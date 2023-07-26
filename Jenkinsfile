@@ -110,7 +110,7 @@ environment {
                                 sh "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin"
                             //}
 
-                                docker.withRegistry([url: 'https://registry.hub.docker.com', credentialsId: 'DOCKERHUB_CREDENTIALS_ID_TEST']) {
+                                //docker.withRegistry([url: 'https://registry.hub.docker.com', credentialsId: 'DOCKERHUB_CREDENTIALS_ID_TEST']) {
                                     def dockerHubUsername = "azzinoth5"
                                     def repo = "sbm_test"
                                     def dockerHubRepo = "${dockerHubUsername}/${repo}" // Replace <DOCKERHUB_USERNAME> with your Docker Hub username
@@ -118,7 +118,7 @@ environment {
                                     sh "docker tag sbm_test ${dockerHubRepo}:${dockerHubTag}"
                                     sh "docker push ${dockerHubRepo}:${dockerHubTag}"
                                     sh "docker logout"
-                                    }
+                                   // }
                                 
                                 
                                
