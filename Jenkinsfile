@@ -112,6 +112,17 @@ pipeline {
         stage('Push Docker image to Docker Hub') {
                     steps {
                         script {
+                            withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS_ID', usernameVariable: 'azzinoth5', passwordVariable: 'DOCKER_PASSWORD')]) {
+                                sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
+                            }
+                                def dockerHubUsername = "azzinoth5"
+                                def repo = params.Repository
+                                def dockerHubRepo = "${dockerHubUsername}/${repo}" // Replace <DOCKERHUB_USERNAME> with your Docker Hub username
+                                def dockerHubTag = "v1.0" // Replace v1.0 with the desired tag/version
+                                sh "docker tag sbm_test ${dockerHubRepo}:${dockerHubTag}"
+                                // Push the Docker image to Docker Hub
+                                sh "docker push ${dockerHubRepo}:${dockerHubTag}"
+                                sh "docker logout"
                             //docker.withRegistry("https://hub.docker.com/repository/docker/azzinoth5/sbm_test/general", "DOCKERHUB_CREDENTIALS_ID") {
                                 // Log in to Docker Hub
                                 
@@ -119,17 +130,9 @@ pipeline {
                                 
                                 
                                 // Tag the Docker image with the Docker Hub repository name and version
-                              //  def dockerHubUsername = "azzinoth5"
-                              //  def repo = params.Repository
-                                
-                              //  def dockerHubRepo = "${dockerHubUsername}/${repo}" // Replace <DOCKERHUB_USERNAME> with your Docker Hub username
-                               // def dockerHubTag = "v1.0" // Replace v1.0 with the desired tag/version
-                               // sh "docker tag sbm_test ${dockerHubRepo}:${dockerHubTag}"
 
-                                // Push the Docker image to Docker Hub
-                               // sh "docker push ${dockerHubRepo}:${dockerHubTag}"
 
-                               pushDockerImageToDockerHub()
+                               //pushDockerImageToDockerHub()
                             }
                         }
                     }
