@@ -99,8 +99,9 @@ pipeline {
                         script {
                             withCredentials([string(credentialsId: 'DOCKERHUB_CREDENTIALS_ID', variable: 'DOCKERHUB_CREDENTIALS')]) {
                                 // Log in to Docker Hub
-                                sh "echo $DOCKERHUB_CREDENTIALS | docker login --username azzinoth5 --password-stdin"
-
+                                //sh "echo $DOCKERHUB_CREDENTIALS | docker login --username azzinoth5 --password-stdin"
+                                def dockerHubUsername = "azzinoth5" // Replace <DOCKERHUB_USERNAME> with your Docker Hub username
+                                sh "docker login --username ${dockerHubUsername} --password ${DOCKERHUB_CREDENTIALS}"
                                 // Tag the Docker image with the Docker Hub repository name and version
                                 def repo = params.Repository
                                 def dockerHubRepo = "azzinoth5/${repo}" // Replace <DOCKERHUB_USERNAME> with your Docker Hub username
