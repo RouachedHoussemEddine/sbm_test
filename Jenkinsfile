@@ -113,13 +113,14 @@ pipeline {
                     steps {
                         script {
                             withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS_ID_TEST', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                                sh "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin"
-                            }
-                                def dockerHubUsername = "azzinoth5"
-                                def repo = "sbm_test"
-                                def dockerHubRepo = "${dockerHubUsername}/${repo}" // Replace <DOCKERHUB_USERNAME> with your Docker Hub username
-                                def dockerHubTag = "v1.0" // Replace v1.0 with the desired tag/version
+                                //sh "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin"
+                            //}
+
                                 docker.withRegistry([url: 'https://registry.hub.docker.com', credentialsId: 'DOCKERHUB_CREDENTIALS_ID_TEST']) {
+                                    def dockerHubUsername = "azzinoth5"
+                                    def repo = "sbm_test"
+                                    def dockerHubRepo = "${dockerHubUsername}/${repo}" // Replace <DOCKERHUB_USERNAME> with your Docker Hub username
+                                    def dockerHubTag = "v1.0" // Replace v1.0 with the desired tag/version
                                     sh "docker tag sbm_test ${dockerHubRepo}:${dockerHubTag}"
                                     sh "docker push ${dockerHubRepo}:${dockerHubTag}"
                                     sh "docker logout"
@@ -130,9 +131,9 @@ pipeline {
                             }
                         }
                     }
+                }
                 
-
-                
+            
     }
     
     post {
