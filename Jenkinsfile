@@ -5,6 +5,7 @@ properties([
                                 choice (choices: ['RouachedHoussemEddine', 'sbm', 'zied'], description: 'Provide GitHub owner', name: 'GitHub_owner'),
                                 choice (choices: ['sbm_test', 'projet_Auth', 'projet_Park'], description: 'Provide GitHub repository', name: 'Repository'),
                                 choice (choices: ['test', 'dev', 'prod'], description: 'Provide GitHub branch', name: 'Branch'),
+                                
                                 [$class: 'CascadeChoiceParameter', 
                                     choiceType: 'PT_SINGLE_SELECT', 
                                     description: 'Select the docker image from the Dropdown List',  
@@ -21,7 +22,8 @@ properties([
                                       [name:'parameter', value: 'docker_image']
                                       ]
                                     ]
-                                ],
+                                ]
+                                ,
                                 [$class: 'CascadeChoiceParameter', 
                                     choiceType: 'PT_SINGLE_SELECT', 
                                     description: 'Select the AMI from the Dropdown List',
@@ -38,7 +40,8 @@ properties([
                                       [name:'parameter', value: '${docker_image}']
                                       ]
                                     ]
-                                ],
+                                ]
+                                ,
                                 [$class: 'CascadeChoiceParameter', 
                                     choiceType: 'PT_SINGLE_SELECT', 
                                     description: 'Select the  AMI based on the following information', 
@@ -73,21 +76,6 @@ properties([
                                 ]
                             ])
                         ])
-
-def pushDockerImageToDockerHub() {
-    script {
-        def dockerHubRepo = "azzinoth5/sbm_test" // Replace <DOCKERHUB_USERNAME> with your Docker Hub username
-        def dockerHubTag = "v1.0" // Replace v1.0 with the desired tag/version
-
-        // Log in to Docker Hub
-        docker.withRegistry(url: 'https://registry.hub.docker.com', credentialsId: 'DOCKERHUB_CREDENTIALS_ID') {
-            sh "docker tag sbm_test ${dockerHubRepo}:${dockerHubTag}"
-            sh "docker push ${dockerHubRepo}:${dockerHubTag}"
-        }
-    }
-}
-
-
 
 pipeline {
     agent any
