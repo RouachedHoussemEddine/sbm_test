@@ -1,3 +1,4 @@
+@Library('docker-workflow') _
 properties([
                             parameters([
                                 //  choice(name: 'BRANCH_NAME', choices: ['test', 'dev', 'prod'], description: 'Branch to build')
