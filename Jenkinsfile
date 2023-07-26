@@ -97,7 +97,7 @@ pipeline {
         stage('Push Docker image to Docker Hub') {
                     steps {
                         script {
-                            withDockerRegistry([string(credentialsId: 'DOCKERHUB_CREDENTIALS_ID', url : '')]) {
+                            docker.withRegistry("https://registry.hub.docker.com", "DOCKERHUB_CREDENTIALS_ID") {
                                 // Log in to Docker Hub
                                 
                                 //sh "echo $DOCKERHUB_CREDENTIALS | docker login --username ${dockerHubUsername} --password-stdin"
@@ -106,7 +106,8 @@ pipeline {
                                 // Tag the Docker image with the Docker Hub repository name and version
                                 def dockerHubUsername = "azzinoth5"
                                 def repo = params.Repository
-                                def dockerHubRepo = "azzinoth5/${repo}" // Replace <DOCKERHUB_USERNAME> with your Docker Hub username
+                                
+                                def dockerHubRepo = "${dockerHubUsername}/${repo}" // Replace <DOCKERHUB_USERNAME> with your Docker Hub username
                                 def dockerHubTag = "v1.0" // Replace v1.0 with the desired tag/version
                                 sh "docker tag sbm_test ${dockerHubRepo}:${dockerHubTag}"
 
