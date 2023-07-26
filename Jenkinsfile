@@ -6,7 +6,7 @@ properties([
                                 [choice (choices: ['test', 'dev', 'prod'], description: 'Provide GitHub branch', name: 'Branch')],
                                 [$class: 'ChoiceParameter', 
                                     choiceType: 'PT_SINGLE_SELECT', 
-                                    description: 'Select the docker image from the Dropdown List',  
+                                    description: 'Select the docke image from the Dropdown List',  
                                     name: 'docker_image',
                                     referencedParameters: 'GitHub_owner,Repository,Branch',
                                     script: [
