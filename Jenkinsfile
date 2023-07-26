@@ -73,6 +73,21 @@ properties([
                             ])
                         ])
 
+def pushDockerImageToDockerHub() {
+    script {
+        def dockerHubRepo = "azzinoth5/sbm_test" // Replace <DOCKERHUB_USERNAME> with your Docker Hub username
+        def dockerHubTag = "v1.0" // Replace v1.0 with the desired tag/version
+
+        // Log in to Docker Hub
+        docker.withRegistry(url: 'https://registry.hub.docker.com', credentialsId: 'DOCKERHUB_CREDENTIALS_ID') {
+            sh "docker tag sbm_test ${dockerHubRepo}:${dockerHubTag}"
+            sh "docker push ${dockerHubRepo}:${dockerHubTag}"
+        }
+    }
+}
+
+
+
 pipeline {
     agent any
     stages {
@@ -97,22 +112,24 @@ pipeline {
         stage('Push Docker image to Docker Hub') {
                     steps {
                         script {
-                            docker.withRegistry("https://registry.hub.docker.com", "DOCKERHUB_CREDENTIALS_ID") {
+                            //docker.withRegistry("https://hub.docker.com/repository/docker/azzinoth5/sbm_test/general", "DOCKERHUB_CREDENTIALS_ID") {
                                 // Log in to Docker Hub
                                 
                                 //sh "echo $DOCKERHUB_CREDENTIALS | docker login --username ${dockerHubUsername} --password-stdin"
                                 
                                 
                                 // Tag the Docker image with the Docker Hub repository name and version
-                                def dockerHubUsername = "azzinoth5"
-                                def repo = params.Repository
+                              //  def dockerHubUsername = "azzinoth5"
+                              //  def repo = params.Repository
                                 
-                                def dockerHubRepo = "${dockerHubUsername}/${repo}" // Replace <DOCKERHUB_USERNAME> with your Docker Hub username
-                                def dockerHubTag = "v1.0" // Replace v1.0 with the desired tag/version
-                                sh "docker tag sbm_test ${dockerHubRepo}:${dockerHubTag}"
+                              //  def dockerHubRepo = "${dockerHubUsername}/${repo}" // Replace <DOCKERHUB_USERNAME> with your Docker Hub username
+                               // def dockerHubTag = "v1.0" // Replace v1.0 with the desired tag/version
+                               // sh "docker tag sbm_test ${dockerHubRepo}:${dockerHubTag}"
 
                                 // Push the Docker image to Docker Hub
-                                sh "docker push ${dockerHubRepo}:${dockerHubTag}"
+                               // sh "docker push ${dockerHubRepo}:${dockerHubTag}"
+
+                               pushDockerImageToDockerHub()
                             }
                         }
                     }
