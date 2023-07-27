@@ -8,7 +8,7 @@ properties([
                                 
                                 [$class: 'CascadeChoiceParameter', 
                                     choiceType: 'PT_SINGLE_SELECT', 
-                                    description: 'Select the docker image from the Dropdown List',  
+                                    description: 'Select the docker image',  
                                     name: 'docker_image',
                                     referencedParameters: 'GitHub_owner,Repository,Branch',
                                     script: [
@@ -26,7 +26,7 @@ properties([
                                 ,
                                 [$class: 'CascadeChoiceParameter', 
                                     choiceType: 'PT_SINGLE_SELECT', 
-                                    description: 'Select the AMI from the Dropdown List',
+                                    description: 'Select docker image version from the List',
                                     name: 'docker_image_version', 
                                     referencedParameters: 'docker_image,GitHub_owner,Repository,Branch', 
                                     script: [
@@ -44,7 +44,7 @@ properties([
                                 ,
                                 [$class: 'CascadeChoiceParameter', 
                                     choiceType: 'PT_SINGLE_SELECT', 
-                                    description: 'Select the  AMI based on the following information', 
+                                    description: 'Select the  AMI  information', 
                                     name: 'Image Information', 
                                     referencedParameters: 'docker_image', 
                                     script: 
@@ -108,9 +108,9 @@ environment {
                         script {
                             withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS_ID_TEST', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                                 sh "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin"
-                            //}
+                            
 
-                                //docker.withRegistry([url: 'https://registry.hub.docker.com', credentialsId: 'DOCKERHUB_CREDENTIALS_ID_TEST']) {
+                                
                                     def dockerHubUsername = "azzinoth5"
                                     def repo = "sbm_test"
                                     def dockerHubRepo = "${dockerHubUsername}/${repo}" // Replace <DOCKERHUB_USERNAME> with your Docker Hub username
@@ -118,7 +118,7 @@ environment {
                                     sh "docker tag sbm_test ${dockerHubRepo}:${dockerHubTag}"
                                     sh "docker push ${dockerHubRepo}:${dockerHubTag}"
                                     sh "docker logout"
-                                   // }
+                                   
                                 
                                 
                                
