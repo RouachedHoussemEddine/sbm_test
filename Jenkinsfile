@@ -5,7 +5,7 @@ properties([
                                 choice (choices: getGithubInfoByKey('GitHub_owner'), description: 'Provide GitHub owner', name: 'GitHub_owner'),
                                 choice (choices: getGithubInfoByKey('Repository'), description: 'Provide GitHub repository', name: 'Repository'),
                                 choice (choices: getGithubInfoByKey('Branch'), description: 'Provide GitHub branch', name: 'Branch'),
-                                choice (choices: getGithubInfoByKey('jsonfilelocation'), description: 'Provide GitHub branch', name: 'jsonfile'),
+                                choice (choices: getGithubInfoByKey('jsonfilelocation'), description: 'Provide jsonfile name', name: 'jsonfile'),
                                 [$class: 'CascadeChoiceParameter', 
                                     choiceType: 'PT_SINGLE_SELECT', 
                                     description: 'Select the docker image',  
@@ -82,9 +82,6 @@ def getGithubInfoByKey(String dataKey) {
     def jsonData = new groovy.json.JsonSlurper().parseText(jsonFile.text)
     return jsonData."${dataKey}".join('\n')
 }
-
-
-
 pipeline {
     agent any
 
