@@ -100,7 +100,12 @@ environment {
         
                 stage('Fetch JSON data from GitHub') {
             steps {
+                def user = params.GitHub_owner
+                def repo = params.Repository
+                def branch = params.Branch
                 
+                // Fetch JSON data from the repository and store it as a file
+                    sh 'curl -o data.json https://raw.githubusercontent.com/${user}/${repo}/${branch}/sbm.json'
             }
         }
 
