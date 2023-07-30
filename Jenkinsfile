@@ -79,7 +79,7 @@ choice (choices: ["sbm.json","sbm_zied.json"], description: 'Provide jsonfile na
 ])
 
 def getGithubInfoByKey(String dataKey) {
-    def jsonFile = new File('data.json')
+    def jsonFile = new File(params.jsonfile)
     def jsonData = new groovy.json.JsonSlurper().parseText(jsonFile.text)
     return jsonData."${dataKey}".join('\n')
 }
