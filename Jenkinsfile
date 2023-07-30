@@ -2,7 +2,7 @@
 properties([
                             parameters([
                                 //  choice(name: 'BRANCH_NAME', choices: ['test', 'dev', 'prod'], description: 'Branch to build')
-                                choice (choices: ['RouachedHoussemEddine', 'sbm', 'zied'], description: 'Provide GitHub owner', name: 'GitHub_owner'),
+                                choice (choices: getGithubOwnerChoices(), description: 'Provide GitHub owner', name: 'GitHub_owner'),
                                 choice (choices: ['sbm_test', 'projet_Auth', 'projet_Park'], description: 'Provide GitHub repository', name: 'Repository'),
                                 choice (choices: ['test', 'dev', 'prod'], description: 'Provide GitHub branch', name: 'Branch'),
                                 
@@ -77,6 +77,12 @@ properties([
                             ])
                         ])
 
+def getGithubOwnerChoices() {
+    def jsonFile = new File('sbm.json')
+    def jsonData = new groovy.json.JsonSlurper().parseText(jsonFile.text)
+    return jsonData.GitHub_owner.join('\n')
+}
+
 pipeline {
     agent any
 
@@ -91,6 +97,16 @@ environment {
             }
         }
         
+        
+                stage('Fetch JSON data from GitHub') {
+            steps {
+                
+            }
+        }
+
+
+
+
         stage('Build Docker image') {
             steps {
                 script {
