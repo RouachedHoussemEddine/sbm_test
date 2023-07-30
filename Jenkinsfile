@@ -79,9 +79,10 @@ choice (choices: ['sbm.json','sbm_zied.json'], description: 'Provide jsonfile na
 ])
 
 def getGithubInfoByKey(String dataKey) {
-    def jsonFile = new File(params.jsonfile)
+    //def jsonFile = new File(params.jsonfile)
+    def jsonFile = new File('sbm.json')
     if (!jsonFile.exists()) {
-        println "JsonFile not found: ${params.jsonfile}"
+        println "JsonFile not found"
                             }
     def jsonData = new groovy.json.JsonSlurper().parseText(jsonFile.text)
     return jsonData."${dataKey}".join('\n')
@@ -108,7 +109,7 @@ environment {
                 def branch = params.Branch
                 def jsonFileLocation = params.jsonfile
                 // Fetch JSON data from the repository and store it as a file
-                sh 'curl -o ${jsonFileLocation} https://raw.githubusercontent.com/${user}/${repo}/${branch}/sbm.json'
+                sh 'curl -o sbm.json https://raw.githubusercontent.com/${user}/${repo}/${branch}/sbm.json'
                     }
                 }
         }
