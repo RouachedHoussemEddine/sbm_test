@@ -78,7 +78,7 @@ properties([
                         ])
 
 def getGithubOwnerChoices() {
-    def jsonFile = new File('sbm.json')
+    def jsonFile = new File('data.json')
     def jsonData = new groovy.json.JsonSlurper().parseText(jsonFile.text)
     return jsonData.GitHub_owner.join('\n')
 }
