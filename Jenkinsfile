@@ -55,7 +55,7 @@ choice (choices: ['sbm.json','sbm_zied.json'], description: 'Provide jsonfile na
                 sandbox: false, 
                 script: "return['Could not get Environment from Env Param']"
                 ], 
-        script: [
+            script: [
                 classpath: [], 
                 sandbox: false, 
                 script: '''
