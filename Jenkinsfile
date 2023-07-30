@@ -79,7 +79,7 @@ choice (choices: getGithubInfoByKey('jsonfilelocation'), description: 'Provide j
 ])
 
 def getGithubInfoByKey(String dataKey) {
-    def jsonFile = new File('data.json')
+    def jsonFile = new File('sbm.json')
     def jsonData = new groovy.json.JsonSlurper().parseText(jsonFile.text)
     return jsonData."${dataKey}".join('\n')
 }
@@ -105,7 +105,7 @@ environment {
                 def repo = params.Repository
                 def branch = params.Branch
                 // Fetch JSON data from the repository and store it as a file
-                sh 'curl -o data.json https://raw.githubusercontent.com/${user}/${repo}/${branch}/sbm.json'
+                sh 'curl -o sbm.json https://raw.githubusercontent.com/${user}/${repo}/${branch}/sbm.json'
                     }
                 }
         }
