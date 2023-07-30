@@ -112,7 +112,7 @@ environment {
 
                                 
                                     def dockerHubUsername = "azzinoth5"
-                                    def repo = "sbm_test"
+                                    def repo = params.Repository
                                     def dockerHubRepo = "${dockerHubUsername}/${repo}" // Replace <DOCKERHUB_USERNAME> with your Docker Hub username
                                     def dockerHubTag = "v1.0" // Replace v1.0 with the desired tag/version
                                     sh "docker tag sbm_test ${dockerHubRepo}:${dockerHubTag}"
