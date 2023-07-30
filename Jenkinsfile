@@ -2,15 +2,15 @@
 properties([
                             parameters([
                                 //  choice(name: 'BRANCH_NAME', choices: ['test', 'dev', 'prod'], description: 'Branch to build')
-                                choice (choices: getGithubOwnerChoices(), description: 'Provide GitHub owner', name: 'GitHub_owner'),
-                                choice (choices: ['sbm_test', 'projet_Auth', 'projet_Park'], description: 'Provide GitHub repository', name: 'Repository'),
-                                choice (choices: ['test', 'dev', 'prod'], description: 'Provide GitHub branch', name: 'Branch'),
-                                
+                                choice (choices: getGithubInfoByKey('GitHub_owner'), description: 'Provide GitHub owner', name: 'GitHub_owner'),
+                                choice (choices: getGithubInfoByKey('Repository'), description: 'Provide GitHub repository', name: 'Repository'),
+                                choice (choices: getGithubInfoByKey('Branch'), description: 'Provide GitHub branch', name: 'Branch'),
+                                choice (choices: getGithubInfoByKey('jsonfilelocation'), description: 'Provide GitHub branch', name: 'jsonfile'),
                                 [$class: 'CascadeChoiceParameter', 
                                     choiceType: 'PT_SINGLE_SELECT', 
                                     description: 'Select the docker image',  
                                     name: 'docker_image',
-                                    referencedParameters: 'GitHub_owner,Repository,Branch',
+                                    referencedParameters: 'GitHub_owner,Repository,Branch,jsonfile',
                                     script: [
                                     $class: 'ScriptlerScript',
                                     scriptlerScriptId:'fetchJsonDataFromGithub.groovy',
@@ -18,7 +18,7 @@ properties([
                                       [name:'owner', value: '${GitHub_owner}'],
                                       [name:'repo', value: '${Repository}'],
                                       [name:'branch', value: '${Branch}'],
-                                      [name:'filePath', value: 'sbm.json'],
+                                      [name:'filePath', value: '${jsonfile}'],
                                       [name:'parameter', value: 'docker_image']
                                       ]
                                     ]
@@ -28,7 +28,7 @@ properties([
                                     choiceType: 'PT_SINGLE_SELECT', 
                                     description: 'Select docker image version from the List',
                                     name: 'docker_image_version', 
-                                    referencedParameters: 'docker_image,GitHub_owner,Repository,Branch', 
+                                    referencedParameters: 'docker_image,GitHub_owner,Repository,Branch,jsonfile', 
                                     script: [
                                     $class: 'ScriptlerScript',
                                     scriptlerScriptId:'fetchJsonDataFromGithubVersion.groovy',
@@ -36,7 +36,7 @@ properties([
                                       [name:'owner', value: '${GitHub_owner}'],
                                       [name:'repo', value: '${Repository}'],
                                       [name:'branch', value: '${Branch}'],
-                                      [name:'filePath', value: 'sbm.json'],
+                                      [name:'filePath', value: '${jsonfile}'],
                                       [name:'parameter', value: '${docker_image}']
                                       ]
                                     ]
@@ -77,11 +77,13 @@ properties([
                             ])
                         ])
 
-def getGithubOwnerChoices() {
+def getGithubInfoByKey(String dataKey) {
     def jsonFile = new File('data.json')
     def jsonData = new groovy.json.JsonSlurper().parseText(jsonFile.text)
-    return jsonData.GitHub_owner.join('\n')
+    return jsonData."${dataKey}".join('\n')
 }
+
+
 
 pipeline {
     agent any
