@@ -6,7 +6,7 @@ parameters([
 choice (choices: getGithubInfoByKey('GitHub_owner'), description: 'Provide GitHub owner', name: 'GitHub_owner'),
 choice (choices: getGithubInfoByKey('Repository'), description: 'Provide GitHub repository', name: 'Repository'),
 choice (choices: getGithubInfoByKey('Branch'), description: 'Provide GitHub branch', name: 'Branch'),
-choice (choices: getGithubInfoByKey('jsonfilelocation'), description: 'Provide jsonfile name', name: 'jsonfile'),
+choice (choices: ["sbm.json","sbm_zied.json"], description: 'Provide jsonfile name', name: 'jsonfile'),
 [$class: 'CascadeChoiceParameter', 
     choiceType: 'PT_SINGLE_SELECT', 
     description: 'Select the docker image',  
@@ -103,8 +103,9 @@ environment {
                 def user = params.GitHub_owner
                 def repo = params.Repository
                 def branch = params.Branch
+                def jsonFileLocation = params.jsonfile
                 // Fetch JSON data from the repository and store it as a file
-                sh 'curl -o data.json https://raw.githubusercontent.com/${user}/${repo}/${branch}/sbm.json'
+                sh 'curl -o ${jsonFileLocation} https://raw.githubusercontent.com/${user}/${repo}/${branch}/sbm.json'
                     }
                 }
         }
