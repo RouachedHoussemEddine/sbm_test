@@ -6,7 +6,10 @@ parameters([
 choice (choices: getGithubInfoByKey('GitHub_owner'), description: 'Provide GitHub owner', name: 'GitHub_owner'),
 choice (choices: getGithubInfoByKey('Repository'), description: 'Provide GitHub repository', name: 'Repository'),
 choice (choices: getGithubInfoByKey('Branch'), description: 'Provide GitHub branch', name: 'Branch'),
-choice (choices: ['sbm.json','sbm_zied.json'], description: 'Provide jsonfile name', name: 'jsonfile'),
+choice (choices: getGithubInfoByKey('jsonfilelocation'), description: 'Provide jsonfile name', name: 'jsonfile'),
+//choice (choices: ['RouachedHoussemEddine', 'sbm', 'zied'], description: 'Provide GitHub owner', name: 'GitHub_owner'),
+//choice (choices: ['sbm_test', 'projet_Auth', 'projet_Park'], description: 'Provide GitHub repository', name: 'Repository'),
+//choice (choices: ['test','dev','prod'], description: 'Provide GitHub branch', name: 'Branch'),
 [$class: 'CascadeChoiceParameter', 
     choiceType: 'PT_SINGLE_SELECT', 
     description: 'Select the docker image',  
@@ -79,14 +82,12 @@ choice (choices: ['sbm.json','sbm_zied.json'], description: 'Provide jsonfile na
 ])
 
 def getGithubInfoByKey(String dataKey) {
-    //def jsonFile = new File(params.jsonfile)
-    def jsonFile = new File('sbm.json')
-    if (!jsonFile.exists()) {
-        println "JsonFile not found"
-                            }
-    def jsonData = new groovy.json.JsonSlurper().parseText(jsonFile.text)
-    return jsonData."${dataKey}".join('\n')
+    def githubPath = 'https://raw.githubusercontent.com/RouachedHoussemEddine/sbm_test/test/sbm.json'
+    def jsonData = new URL(githubPath).getText()
+    def parsedJson = new groovy.json.JsonSlurper().parseText(jsonData)
+    return parsedJson."${dataKey}".join('\n')
 }
+
 pipeline {
     agent any
 
@@ -95,12 +96,6 @@ environment {
   }
 
     stages {
-        stage('Pull GitHub') {
-            steps {
-                checkout scmGit(branches: [[name: "*/test"]], extensions: [], userRemoteConfigs: [[url: 'https://github.com/RouachedHoussemEddine/sbm_test']])
-            }
-        }
-        
         stage('Fetch JSON data from GitHub') {
             steps {
                 script {
@@ -108,11 +103,23 @@ environment {
                 def repo = params.Repository
                 def branch = params.Branch
                 def jsonFileLocation = params.jsonfile
+                // Construct the GitHub path to the JSON file
+                //def githubPath = "https://raw.githubusercontent.com/RouachedHoussemEddine/sbm_test/test/sbm.json"
                 // Fetch JSON data from the repository and store it as a file
-                sh 'curl -o sbm.json https://raw.githubusercontent.com/${user}/${repo}/${branch}/sbm.json'
+                sh 'curl -o sbm.json https://raw.githubusercontent.com/RouachedHoussemEddine/sbm_test/test/sbm.json'
                     }
                 }
         }
+        
+        
+        
+        stage('Pull GitHub') {
+            steps {
+                checkout scmGit(branches: [[name: "*/test"]], extensions: [], userRemoteConfigs: [[url: 'https://github.com/RouachedHoussemEddine/sbm_test']])
+            }
+        }
+        
+        
 
         stage('Build Docker image') {
             steps {
