@@ -79,7 +79,7 @@ choice (choices: getGithubInfoByKey('jsonfilelocation'), description: 'Provide j
 ])
 
 def getGithubInfoByKey(String dataKey) {
-    def jsonFile = new File('sbm.json')
+    def jsonFile = new File('data.json')
     def jsonData = new groovy.json.JsonSlurper().parseText(jsonFile.text)
     return jsonData."${dataKey}".join('\n')
 }
@@ -97,21 +97,17 @@ environment {
             }
         }
         
-        
-                stage('Fetch JSON data from GitHub') {
+        stage('Fetch JSON data from GitHub') {
             steps {
                 script {
                 def user = params.GitHub_owner
                 def repo = params.Repository
                 def branch = params.Branch
                 // Fetch JSON data from the repository and store it as a file
-                sh 'curl -o sbm.json https://raw.githubusercontent.com/${user}/${repo}/${branch}/sbm.json'
+                sh 'curl -o data.json https://raw.githubusercontent.com/${user}/${repo}/${branch}/sbm.json'
                     }
                 }
         }
-
-
-
 
         stage('Build Docker image') {
             steps {
@@ -125,6 +121,7 @@ environment {
             }
 
         }
+
         stage('Push Docker image to Docker Hub') {
                     steps {
                         script {
