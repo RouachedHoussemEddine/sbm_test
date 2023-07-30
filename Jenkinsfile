@@ -1,81 +1,82 @@
 @Library('docker-workflow@master') _
 properties([
-                            parameters([
-                                //  choice(name: 'BRANCH_NAME', choices: ['test', 'dev', 'prod'], description: 'Branch to build')
-                                choice (choices: getGithubInfoByKey('GitHub_owner'), description: 'Provide GitHub owner', name: 'GitHub_owner'),
-                                choice (choices: getGithubInfoByKey('Repository'), description: 'Provide GitHub repository', name: 'Repository'),
-                                choice (choices: getGithubInfoByKey('Branch'), description: 'Provide GitHub branch', name: 'Branch'),
-                                choice (choices: getGithubInfoByKey('jsonfilelocation'), description: 'Provide jsonfile name', name: 'jsonfile'),
-                                [$class: 'CascadeChoiceParameter', 
-                                    choiceType: 'PT_SINGLE_SELECT', 
-                                    description: 'Select the docker image',  
-                                    name: 'docker_image',
-                                    referencedParameters: 'GitHub_owner,Repository,Branch,jsonfile',
-                                    script: [
-                                    $class: 'ScriptlerScript',
-                                    scriptlerScriptId:'fetchJsonDataFromGithub.groovy',
-                                    parameters: [
-                                      [name:'owner', value: '${GitHub_owner}'],
-                                      [name:'repo', value: '${Repository}'],
-                                      [name:'branch', value: '${Branch}'],
-                                      [name:'filePath', value: '${jsonfile}'],
-                                      [name:'parameter', value: 'docker_image']
-                                      ]
-                                    ]
-                                ]
-                                ,
-                                [$class: 'CascadeChoiceParameter', 
-                                    choiceType: 'PT_SINGLE_SELECT', 
-                                    description: 'Select docker image version from the List',
-                                    name: 'docker_image_version', 
-                                    referencedParameters: 'docker_image,GitHub_owner,Repository,Branch,jsonfile', 
-                                    script: [
-                                    $class: 'ScriptlerScript',
-                                    scriptlerScriptId:'fetchJsonDataFromGithubVersion.groovy',
-                                    parameters: [
-                                      [name:'owner', value: '${GitHub_owner}'],
-                                      [name:'repo', value: '${Repository}'],
-                                      [name:'branch', value: '${Branch}'],
-                                      [name:'filePath', value: '${jsonfile}'],
-                                      [name:'parameter', value: '${docker_image}']
-                                      ]
-                                    ]
-                                ]
-                                ,
-                                [$class: 'CascadeChoiceParameter', 
-                                    choiceType: 'PT_SINGLE_SELECT', 
-                                    description: 'Select the  AMI  information', 
-                                    name: 'Image Information', 
-                                    referencedParameters: 'docker_image', 
-                                    script: 
-                                        [$class: 'GroovyScript', 
-                                        fallbackScript: [
-                                                classpath: [], 
-                                                sandbox: false, 
-                                                script: "return['Could not get Environment from Env Param']"
-                                                ], 
-                                        script: [
-                                                classpath: [], 
-                                                sandbox: false, 
-                                                script: '''
-                                                if (docker_image.equals("python")){
-                                                    return["ami-sd2345sd", "ami-asdf245sdf", "ami-asdf3245sd"]
-                                                }
-                                                else if(docker_image.equals("nginx")){
-                                                    return["ami-sd34sdf", "ami-sdf345sdc", "ami-sdf34sdf"]
-                                                }
-                                                else if(docker_image.equals("busybox")){
-                                                    return["ami-sdf34sdf", "ami-sdf34ds", "ami-sdf3sf3"]
-                                                }
-                                                else if(docker_image.equals("postgres")){
-                                                    return["ami-sdf34sdf", "ami-sdf34ds", "ami-sdf3sf3"]
-                                                }
-                                                '''
-                                            ] 
-                                    ]
-                                ]
-                            ])
-                        ])
+                            
+parameters([
+//choice(name: 'BRANCH_NAME', choices: ['test', 'dev', 'prod'], description: 'Branch to build')
+choice (choices: getGithubInfoByKey('GitHub_owner'), description: 'Provide GitHub owner', name: 'GitHub_owner'),
+choice (choices: getGithubInfoByKey('Repository'), description: 'Provide GitHub repository', name: 'Repository'),
+choice (choices: getGithubInfoByKey('Branch'), description: 'Provide GitHub branch', name: 'Branch'),
+choice (choices: getGithubInfoByKey('jsonfilelocation'), description: 'Provide jsonfile name', name: 'jsonfile'),
+[$class: 'CascadeChoiceParameter', 
+    choiceType: 'PT_SINGLE_SELECT', 
+    description: 'Select the docker image',  
+    name: 'docker_image',
+    referencedParameters: 'GitHub_owner,Repository,Branch,jsonfile',
+    script: [
+    $class: 'ScriptlerScript',
+    scriptlerScriptId:'fetchJsonDataFromGithub.groovy',
+    parameters: [
+      [name:'owner', value: '${GitHub_owner}'],
+      [name:'repo', value: '${Repository}'],
+      [name:'branch', value: '${Branch}'],
+      [name:'filePath', value: '${jsonfile}'],
+      [name:'parameter', value: 'docker_image']
+      ]
+    ]
+]
+,
+[$class: 'CascadeChoiceParameter', 
+    choiceType: 'PT_SINGLE_SELECT', 
+    description: 'Select docker image version from the List',
+    name: 'docker_image_version', 
+    referencedParameters: 'docker_image,GitHub_owner,Repository,Branch,jsonfile', 
+    script: [
+    $class: 'ScriptlerScript',
+    scriptlerScriptId:'fetchJsonDataFromGithubVersion.groovy',
+    parameters: [
+      [name:'owner', value: '${GitHub_owner}'],
+      [name:'repo', value: '${Repository}'],
+      [name:'branch', value: '${Branch}'],
+      [name:'filePath', value: '${jsonfile}'],
+      [name:'parameter', value: '${docker_image}']
+      ]
+    ]
+]
+,
+[$class: 'CascadeChoiceParameter', 
+    choiceType: 'PT_SINGLE_SELECT', 
+    description: 'Select the  AMI  information', 
+    name: 'Image Information', 
+    referencedParameters: 'docker_image', 
+    script: 
+        [$class: 'GroovyScript', 
+        fallbackScript: [
+                classpath: [], 
+                sandbox: false, 
+                script: "return['Could not get Environment from Env Param']"
+                ], 
+        script: [
+                classpath: [], 
+                sandbox: false, 
+                script: '''
+                if (docker_image.equals("python")){
+                    return["ami-sd2345sd", "ami-asdf245sdf", "ami-asdf3245sd"]
+                }
+                else if(docker_image.equals("nginx")){
+                    return["ami-sd34sdf", "ami-sdf345sdc", "ami-sdf34sdf"]
+                }
+                else if(docker_image.equals("busybox")){
+                    return["ami-sdf34sdf", "ami-sdf34ds", "ami-sdf3sf3"]
+                }
+                else if(docker_image.equals("postgres")){
+                    return["ami-sdf34sdf", "ami-sdf34ds", "ami-sdf3sf3"]
+                }
+                '''
+            ] 
+    ]
+]
+    ])
+])
 
 def getGithubInfoByKey(String dataKey) {
     def jsonFile = new File('data.json')
@@ -103,10 +104,9 @@ environment {
                 def user = params.GitHub_owner
                 def repo = params.Repository
                 def branch = params.Branch
-                
                 // Fetch JSON data from the repository and store it as a file
-                    sh 'curl -o data.json https://raw.githubusercontent.com/${user}/${repo}/${branch}/sbm.json'
-                        }
+                sh 'curl -o data.json https://raw.githubusercontent.com/${user}/${repo}/${branch}/sbm.json'
+                    }
                 }
         }
 
@@ -130,20 +130,13 @@ environment {
                         script {
                             withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS_ID_TEST', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                                 sh "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin"
-                            
-
-                                
                                     def dockerHubUsername = "azzinoth5"
                                     def repo = params.Repository
-                                    def dockerHubRepo = "${dockerHubUsername}/${repo}" // Replace <DOCKERHUB_USERNAME> with your Docker Hub username
-                                    def dockerHubTag = "v1.0" // Replace v1.0 with the desired tag/version
+                                    def dockerHubRepo = "${dockerHubUsername}/${repo}" 
+                                    def dockerHubTag = "v1.0" //desired tag/version
                                     sh "docker tag sbm_test ${dockerHubRepo}:${dockerHubTag}"
                                     sh "docker push ${dockerHubRepo}:${dockerHubTag}"
-                                    sh "docker logout"
-                                   
-                                
-                                
-                               
+                                    sh "docker logout"   
                             }
                         }
                     }
