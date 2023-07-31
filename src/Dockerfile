@@ -4,8 +4,8 @@ ARG PARAM2
 
 FROM ${PARAM1}:${PARAM2}
 
-ENV PARAM1=${PARAM1}
-ENV PARAM2=${PARAM2}
+#ENV PARAM1=${PARAM1}
+#ENV PARAM2=${PARAM2}
 
 WORKDIR /app
 COPY requirements.txt ./app/src/requirements.txt
