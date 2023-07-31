@@ -1,0 +1,10 @@
+{
+    "image.repository":"550685047140.dkr.ecr.eu-west-1.amazonaws.com/kong/kong-oidc-opa",
+    "env.kong_database":"postgres",
+    "env.database":"postgres",
+    "env.pg_user":"pmkonguser",
+    "env.pg_password":"pmkongpass",
+    "env.pg_host":"postgres-shared-dev-rds-db-instance.cvtugt7tzpek.eu-west-1.rds.amazonaws.com",
+    "customEnv.KONG_NGINX_PROXY_PROXY_BUFFER_SIZE":"16k",
+    "customEnv.KONG_NGINX_PROXY_PROXY_BUFFERS":"4 16k"
+    }

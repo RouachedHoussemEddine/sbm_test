@@ -1,4 +1,8 @@
 {
+    "GitHub_owner": ["RouachedHoussemEddine", "sbm", "zied"],
+    "Repository":["sbm_test", "projet_Auth", "projet_Park"],
+    "Branch":["test","dev","prod"],
+    "jsonfilelocation":["sbm.json","sbm_json"],
     "docker_image": ["python","nginx", "busybox", "postgres"],
     "docker_image_version_python":["latest", "3.10.5", "3.8-alpine"],
     "docker_image_version_nginx":["latest", "1.25.1-bookworm", "mainline-bookworm"],
