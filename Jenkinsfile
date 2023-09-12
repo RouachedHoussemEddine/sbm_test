@@ -103,9 +103,6 @@ environment {
                 def repo = params.Repository
                 def branch = params.Branch
                 def jsonFileLocation = params.jsonfile
-                // Construct the GitHub path to the JSON file
-                //def githubPath = "https://raw.githubusercontent.com/RouachedHoussemEddine/sbm_test/test/sbm.json"
-                // Fetch JSON data from the repository and store it as a file
                 sh 'curl -o sbm.json https://raw.githubusercontent.com/RouachedHoussemEddine/sbm_test/test/sbm.json'
                     }
                 }
