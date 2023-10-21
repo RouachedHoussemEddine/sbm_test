@@ -95,7 +95,7 @@ environment {
     DOCKERHUB_CREDENTIALS = credentials('DOCKERHUB_CREDENTIALS_ID_TEST')
   }
 
-    stages {
+    stages {    
         stage('Fetch JSON data from GitHub') {
             steps {
                 script {
