@@ -98,7 +98,7 @@ environment {
     stages {
         stage('Fetch JSON data from GitHub') {
             steps {
-                script {
+                script { 
                 def user = params.GitHub_owner
                 def repo = params.Repository
                 def branch = params.Branch
